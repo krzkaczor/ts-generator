@@ -1,0 +1,10 @@
+[
+  {
+    "files": "**/*.abi",
+    "output": "./gen",
+    "gen": "typechain",
+    "options": {
+      
+    }
+  }
+]
