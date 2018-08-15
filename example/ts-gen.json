@@ -1,10 +1,10 @@
 [
   {
     "files": "**/*.abi",
-    "output": "./gen",
-    "gen": "typechain",
+    "generator": "typechain",
     "options": {
-      
+      "output": "./gen",
+      "runtimePath": "./gen/runtime.ts"
     }
   }
 ]
