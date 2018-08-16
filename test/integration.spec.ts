@@ -12,8 +12,8 @@ describe("integration", () => {
     } catch {}
   });
 
-  it("should run ts-gen programmatically", () => {
-    cli("./test/integration/ts-gen.json");
+  it("should run ts-gen programmatically", async () => {
+    await cli("./test/integration/ts-gen.json");
 
     snapshot(fs.readFileSync(generateFilePath, "utf-8"));
   });

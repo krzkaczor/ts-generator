@@ -6,15 +6,17 @@ import { TDeps } from "./deps";
 import { loadPlugin } from "./plugins/loadPlugin";
 import { TContext } from "./plugins/types";
 
-interface TOptions {
+export interface TArgs {
   cwd: string;
   configPath: string;
 }
 
-export function tsGen(deps: TDeps, { configPath, cwd }: TOptions): void {
-  const config = parseConfigFile(deps, configPath);
+export async function tsGen(deps: TDeps, args: TArgs): Promise<void> {
+  const { cwd } = args;
 
-  for (const c of config) {
+  const config = await parseConfigFile(deps, args);
+
+  for (const c of config.plugins) {
     const ctx: TContext = { cwd, config: c };
 
     const plugin = loadPlugin(deps, ctx);
@@ -32,7 +34,9 @@ export function tsGen(deps: TDeps, { configPath, cwd }: TOptions): void {
 
     for (const fd of fileDescs) {
       const outputFds = plugin.transformFile(fd);
-      outputFds.forEach(fd => deps.fs.writeFileSync(fd.path, fd.contents, "utf8"));
+      outputFds.forEach(fd =>
+        deps.fs.writeFileSync(fd.path, deps.prettier.format(fd.contents, config.prettier), "utf8"),
+      );
     }
   }
 }
