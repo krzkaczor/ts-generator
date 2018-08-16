@@ -8,11 +8,12 @@ export interface TDeps {
 export interface TPluginCfg {
   files: string;
   generator: string;
-  options: any;
+  [key: string]: any;
 }
 
 export interface TContext {
   cwd: string;
+  config: TPluginCfg;
 }
 
 export interface TFileDesc {
@@ -21,7 +22,7 @@ export interface TFileDesc {
 }
 
 export interface TPluginConstructor {
-  new (ctx: TContext, pluginOptions: any): TPlugin;
+  new (ctx: TContext): TPlugin;
 }
 
 export interface TPlugin {

@@ -29,7 +29,7 @@ function main(): void {
   for (const c of config) {
     const pluginPath = resolvePlugin(deps, c.generator, cwd);
     const PluginCtr = require(pluginPath).default as TPluginConstructor;
-    const plugin = new PluginCtr({ cwd }, c.options);
+    const plugin = new PluginCtr({ cwd, config: c });
 
     plugin.init();
 

@@ -12,9 +12,9 @@ interface TOptions {
 export default class Typechain implements TPlugin {
   private readonly runtimePathAbs: string;
   private readonly genPath?: string;
-  constructor(ctx: TContext, pluginOptions: TOptions) {
-    this.runtimePathAbs = join(ctx.cwd, pluginOptions.runtimePath);
-    this.genPath = pluginOptions.output && join(ctx.cwd, pluginOptions.output);
+  constructor({ cwd, config }: TContext) {
+    this.runtimePathAbs = join(cwd, config.runtimePath);
+    this.genPath = config.output && join(cwd, config.output);
   }
 
   init(): void {
