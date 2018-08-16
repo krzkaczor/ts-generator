@@ -1,0 +1,8 @@
+[
+  {
+    "files": "sample.json",
+    "generator": "dummy-json",
+    "output": "./gen",
+    "runtimePath": "./gen/runtime.ts"
+  }
+]
