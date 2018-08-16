@@ -5,6 +5,6 @@ export function getFilenameWithoutAnyExtensions(filePath: string): string {
   return filePath.slice(0, endPosition !== -1 ? endPosition : filePath.length);
 }
 
-export function getRelativeModulePath(from: string, to: string): string {
-  return ("./" + relative(from, to)).replace(".ts", ""); // @note: this is probably not the best way to find relative path for modules
+export function getRelativeModulePath(cwd: string, to: string): string {
+  return ("./" + relative(cwd, to)).replace(".ts", ""); // @note(kk): any better way to find it?
 }
