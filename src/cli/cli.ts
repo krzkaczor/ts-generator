@@ -2,11 +2,7 @@ import { join, dirname } from "path";
 import { tsGen } from "../tsGen";
 import { createDeps } from "../deps";
 
-function main(): void {
-  const configPathRel = process.argv[2];
-  // tslint:disable-next-line
-  console.assert(configPathRel, "You need to provide config path!");
-
+export function cli(configPathRel: string): void {
   const configPath = join(process.cwd(), configPathRel);
   const cwd = dirname(configPath);
 
@@ -14,5 +10,3 @@ function main(): void {
 
   tsGen(deps, { configPath, cwd });
 }
-
-main();
