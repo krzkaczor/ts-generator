@@ -16,7 +16,9 @@
     "test:mocha": "NODE_ENV=test mocha --require ts-node/register '**/*.spec.ts'",
     "test:mocha:coverage": "NODE_ENV=test nyc mocha --require ts-node/register '**/*.spec.ts'",
     "test": "yarn lint && yarn test:mocha",
-    "test:fix": "yarn lint:fix && yarn test:mocha"
+    "test:fix": "yarn lint:fix && yarn test:mocha",
+    "test:coverage": "yarn lint && yarn test:mocha:coverage",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "devDependencies": {
     "@types/chai": "^4.1.2",
