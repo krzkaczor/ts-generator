@@ -1,4 +1,6 @@
 import { TDeps } from "./deps";
+import { Options as PrettierOptions } from "prettier";
+import { TArgs } from "./tsGen";
 
 export interface TPluginCfg {
   files: string;
@@ -6,10 +8,21 @@ export interface TPluginCfg {
   [key: string]: any;
 }
 
-export const parseConfigFile = ({ fs }: TDeps, path: string): TPluginCfg[] => {
-  const config = fs.readFileSync(path, "utf-8");
+export interface TTsGenCfg {
+  prettier: PrettierOptions;
+  plugins: TPluginCfg[];
+}
+
+export async function parseConfigFile({ fs, prettier }: TDeps, { cwd, configPath }: TArgs): Promise<TTsGenCfg> {
+  const config = fs.readFileSync(configPath, "utf-8");
 
   // assume that config is correctly formatted JUST FOR NOW
 
-  return JSON.parse(config);
-};
+  const pluginCfg = JSON.parse(config);
+  const prettierCfg = await prettier.resolveConfig(cwd);
+
+  return {
+    prettier: { ...(prettierCfg || {}), parser: "typescript" },
+    plugins: pluginCfg,
+  };
+}
