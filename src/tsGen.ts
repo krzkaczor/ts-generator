@@ -4,7 +4,7 @@ import { TFileDesc } from "./plugins/types";
 import { parseConfigFile } from "./parseConfigFile";
 import { TDeps } from "./deps";
 import { loadPlugin } from "./plugins/loadPlugin";
-import { TContext } from "../dist/publicApi";
+import { TContext } from "./plugins/types";
 
 interface TOptions {
   cwd: string;
