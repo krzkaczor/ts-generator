@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "../node_modules/.bin/ts-node ../src/index.ts"
+    "start": "rm -rf ./gen && ../node_modules/.bin/ts-node ../dist/cli/cli.js ./ts-gen.json"
   },
   "dependencies": {
     "mkdirp": "^0.5.1",

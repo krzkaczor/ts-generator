@@ -1,15 +1,4 @@
-import * as fs from "fs";
-
-export interface TDeps {
-  fs: typeof fs;
-  resolve: (module: string) => string;
-}
-
-export interface TPluginCfg {
-  files: string;
-  generator: string;
-  [key: string]: any;
-}
+import { TPluginCfg } from "../parseConfigFile";
 
 export interface TContext {
   cwd: string;

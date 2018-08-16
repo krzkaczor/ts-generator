@@ -1,6 +1,6 @@
-import { TPlugin, TFileDesc, TContext } from "../../../src/types";
+import { TPlugin, TFileDesc, TContext } from "../../../src/plugins/types";
 import { copyRuntime, abiToWrapper } from "typechain";
-import { getFilenameWithoutAnyExtensions, getRelativeModulePath } from "../../../src";
+import { getFilenameWithoutAnyExtensions, getRelativeModulePath } from "../../../dist/publicApi";
 import { parse, join } from "path";
 import { sync as mkdirp } from "mkdirp";
 
