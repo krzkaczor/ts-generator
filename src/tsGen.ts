@@ -1,9 +1,10 @@
 import * as glob from "glob";
 
-import { TPluginConstructor, TFileDesc } from "./plugins/types";
-import { resolvePlugin } from "./plugins/resolvePlugin";
+import { TFileDesc } from "./plugins/types";
 import { parseConfigFile } from "./parseConfigFile";
 import { TDeps } from "./deps";
+import { loadPlugin } from "./plugins/loadPlugin";
+import { TContext } from "../dist/publicApi";
 
 interface TOptions {
   cwd: string;
@@ -14,9 +15,9 @@ export function tsGen(deps: TDeps, { configPath, cwd }: TOptions): void {
   const config = parseConfigFile(deps, configPath);
 
   for (const c of config) {
-    const pluginPath = resolvePlugin(deps, c.generator, cwd);
-    const PluginCtr = require(pluginPath).default as TPluginConstructor;
-    const plugin = new PluginCtr({ cwd, config: c });
+    const ctx: TContext = { cwd, config: c };
+
+    const plugin = loadPlugin(deps, ctx);
 
     plugin.init();
 
