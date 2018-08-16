@@ -13,30 +13,31 @@ export interface TArgs {
 
 export async function tsGen(deps: TDeps, args: TArgs): Promise<void> {
   const { cwd } = args;
+  const { fs, logger, prettier } = deps;
 
-  const config = await parseConfigFile(deps, args);
+  const genConfig = await parseConfigFile(deps, args);
 
-  for (const c of config.plugins) {
-    const ctx: TContext = { cwd, config: c };
+  for (const config of genConfig.plugins) {
+    const ctx: TContext = { cwd, config };
 
     const plugin = loadPlugin(deps, ctx);
 
     plugin.init();
 
-    const filePaths = glob.sync(c.files, { ignore: "node_modules/**", absolute: true, cwd });
+    const filePaths = glob.sync(config.files, { ignore: "node_modules/**", absolute: true, cwd });
     const fileDescs = filePaths.map(
       path =>
         ({
           path,
-          contents: deps.fs.readFileSync(path, "utf8"),
+          contents: fs.readFileSync(path, "utf8"),
         } as TFileDesc),
     );
 
     for (const fd of fileDescs) {
+      logger.info(`Processing ${fd.path} with ${config.generator} plugin`);
+
       const outputFds = plugin.transformFile(fd);
-      outputFds.forEach(fd =>
-        deps.fs.writeFileSync(fd.path, deps.prettier.format(fd.contents, config.prettier), "utf8"),
-      );
+      outputFds.forEach(fd => fs.writeFileSync(fd.path, prettier.format(fd.contents, genConfig.prettier), "utf8"));
     }
   }
 }
