@@ -3,6 +3,7 @@ import { join } from "path";
 const snapshot = require("snap-shot-it"); // @FIXME(KK)  suddenly .d.ts files are being ignored
 
 import { cli } from "../src/cli/cli";
+import { NoLogger } from "../src/logger";
 
 describe("integration", () => {
   const generateFilePath = join(__dirname, "./integration/sample.json.d.ts");
@@ -13,7 +14,7 @@ describe("integration", () => {
   });
 
   it("should run ts-gen programmatically", async () => {
-    await cli("./test/integration/ts-gen.json");
+    await cli("./test/integration/ts-gen.json", { logger: new NoLogger() });
 
     snapshot(fs.readFileSync(generateFilePath, "utf-8"));
   });
