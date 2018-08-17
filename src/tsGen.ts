@@ -5,6 +5,7 @@ import { parseConfigFile } from "./parseConfigFile";
 import { TDeps } from "./deps";
 import { loadPlugin } from "./plugins/loadPlugin";
 import { TContext } from "./plugins/types";
+import { isArray } from "util";
 
 export interface TArgs {
   cwd: string;
@@ -22,7 +23,7 @@ export async function tsGen(deps: TDeps, args: TArgs): Promise<void> {
 
     const plugin = loadPlugin(deps, ctx);
 
-    plugin.init();
+    await plugin.init();
 
     const filePaths = glob.sync(config.files, { ignore: "node_modules/**", absolute: true, cwd });
     const fileDescs = filePaths.map(
@@ -36,7 +37,9 @@ export async function tsGen(deps: TDeps, args: TArgs): Promise<void> {
     for (const fd of fileDescs) {
       logger.info(`Processing ${fd.path} with ${config.generator} plugin`);
 
-      const outputFds = plugin.transformFile(fd);
+      const output = await plugin.transformFile(fd);
+      const outputFds = isArray(output) ? output : [output];
+
       outputFds.forEach(fd => fs.writeFileSync(fd.path, prettier.format(fd.contents, genConfig.prettier), "utf8"));
     }
   }
