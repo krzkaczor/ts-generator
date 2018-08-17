@@ -15,6 +15,6 @@ export interface TPluginConstructor {
 }
 
 export interface TPlugin {
-  init: () => void;
-  transformFile: (file: TFileDesc) => TFileDesc[];
+  init: () => void | Promise<void>;
+  transformFile: (file: TFileDesc) => TFileDesc | TFileDesc[] | Promise<TFileDesc | TFileDesc[]>;
 }

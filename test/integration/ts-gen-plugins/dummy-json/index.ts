@@ -5,7 +5,7 @@ const generateType = (name: string, type: string): string => `export const ${nam
 export default class JsonPlugin implements TPlugin {
   init(): void {}
 
-  transformFile({ path, contents }: TFileDesc): TFileDesc[] {
+  transformFile({ path, contents }: TFileDesc): TFileDesc {
     const outputFileName = `${path}.d.ts`;
 
     const json = JSON.parse(contents);
@@ -20,11 +20,9 @@ export default class JsonPlugin implements TPlugin {
 
     const types = nameTypePairs.map(([name, type]) => generateType(name, type)).join("\n");
 
-    return [
-      {
-        contents: types,
-        path: outputFileName,
-      },
-    ];
+    return {
+      contents: types,
+      path: outputFileName,
+    };
   }
 }
