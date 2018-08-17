@@ -1,4 +1,4 @@
-# ts-gen
+# ts-generator
 
 The missing piece for fully typesafe Typescript apps
 

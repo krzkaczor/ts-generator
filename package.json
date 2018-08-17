@@ -1,5 +1,5 @@
 {
-  "name": "ts-gen",
+  "name": "ts-generator",
   "description": "The missing piece for fully typesafe Typescript apps",
   "keywords": [
     "typescript",
@@ -11,6 +11,7 @@
   "version": "0.0.1",
   "bin": "dist/cli/run.js",
   "main": "./dist/publicApi.js",
+  "repository": "https://github.com/krzkaczor/ts-generator",
   "license": "MIT",
   "scripts": {
     "start": "ts-node ./src/cli/cli.ts ./example/ts-gen.json",
