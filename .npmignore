@@ -1,6 +1,0 @@
-src
-example
-.prettierignore
-.pretterrc
-tsconfig.json
-tslint.json
