@@ -1,11 +1,10 @@
 import { resolvePlugin } from "./resolvePlugin";
 import { TDeps } from "../deps";
-import { TContext, TPluginConstructor } from "./types";
-import { TPlugin } from "./types";
+import { TContext, TsGeneratorPlugin } from "./types";
 
-export function loadPlugin(deps: TDeps, ctx: TContext): TPlugin {
+export function loadPlugin(deps: TDeps, ctx: TContext): TsGeneratorPlugin {
   const pluginPath = resolvePlugin(deps, ctx.config.generator, ctx.cwd);
-  const PluginCtr = require(pluginPath).default as TPluginConstructor;
+  const PluginCtr = require(pluginPath).default as { new (ctx: TContext): TsGeneratorPlugin };
 
   return new PluginCtr(ctx);
 }

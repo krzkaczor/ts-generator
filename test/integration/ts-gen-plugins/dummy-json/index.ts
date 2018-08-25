@@ -1,8 +1,8 @@
-import { TPlugin, TFileDesc } from "../../../../src/publicApi";
+import { TsGeneratorPlugin, TFileDesc } from "../../../../src/publicApi";
 
 const generateType = (name: string, type: string): string => `export const ${name}: ${type}`;
 
-export default class JsonPlugin implements TPlugin {
+export default class JsonPlugin extends TsGeneratorPlugin {
   init(): void {}
 
   transformFile({ path, contents }: TFileDesc): TFileDesc {

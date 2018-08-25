@@ -1,20 +1,24 @@
 import { TPluginCfg } from "../parseConfigFile";
+import { Dictionary } from "../stl";
 
-export interface TContext {
+export type TPluginState = "uninitialized" | "initialized";
+
+export abstract class TsGeneratorPlugin {
+  public state: TPluginState = "uninitialized";
+
+  constructor(protected ctx: TContext) {}
+
+  abstract init(): void | Promise<void>;
+
+  abstract transformFile(file: TFileDesc): TFileDesc | TFileDesc[] | Promise<TFileDesc | TFileDesc[]>;
+}
+
+export interface TContext<T = Dictionary<any>> {
   cwd: string;
-  config: TPluginCfg;
+  config: TPluginCfg<T>;
 }
 
 export interface TFileDesc {
   path: string;
   contents: string;
-}
-
-export interface TPluginConstructor {
-  new (ctx: TContext): TPlugin;
-}
-
-export interface TPlugin {
-  init: () => void | Promise<void>;
-  transformFile: (file: TFileDesc) => TFileDesc | TFileDesc[] | Promise<TFileDesc | TFileDesc[]>;
 }

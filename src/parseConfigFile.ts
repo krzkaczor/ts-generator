@@ -1,12 +1,12 @@
 import { TDeps } from "./deps";
 import { Options as PrettierOptions } from "prettier";
 import { TArgs } from "./tsGen";
+import { Dictionary } from "./stl";
 
-export interface TPluginCfg {
+export type TPluginCfg<T = Dictionary<any>> = {
   files: string;
   generator: string;
-  [key: string]: any;
-}
+} & T;
 
 export interface TTsGenCfg {
   prettier: PrettierOptions;
