@@ -3,3 +3,4 @@ example/gen/*
 .nyc_output
 coverage
 sample.json.d.ts
+dist
