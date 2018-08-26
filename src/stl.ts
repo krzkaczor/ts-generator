@@ -1,10 +1,10 @@
-type Dictionary<T> = { [id: string]: T };
-type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key
-type AsInterface<T> = { [K in keyof T]: T[K] };
+export type Dictionary<T> = { [id: string]: T };
+export type UnionDictionary<K extends string, V> = { [k in K]: V }; // union string literal type as key
+export type AsInterface<T> = { [K in keyof T]: T[K] };
 
-type Opaque<K, T> = T & { __TYPE__: K };
+export type Opaque<K, T> = T & { __TYPE__: K };
 
-type DeepPartial<T> = {
+export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<DeepPartial<U>>
     : T[P] extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : DeepPartial<T[P]>

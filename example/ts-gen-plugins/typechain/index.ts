@@ -8,7 +8,7 @@ import {
   TFileDesc,
   TContext,
   TsGeneratorPlugin,
-} from "../../../dist/publicApi";
+} from "ts-generator";
 
 interface TOptions {
   runtimePath: string;
