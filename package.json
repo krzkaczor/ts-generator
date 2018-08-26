@@ -24,11 +24,12 @@
     "tsc": "tsc --noEmit",
     "lint": "yarn format && yarn tslint && yarn tsc",
     "lint:fix": "yarn format:fix && yarn tslint:fix && yarn tsc",
+    "check-example": "yarn build && ./example/scripts/test.sh",
     "test:mocha": "NODE_ENV=test mocha --require ts-node/register '**/*.spec.ts'",
     "test:mocha:coverage": "NODE_ENV=test nyc mocha --require ts-node/register --require source-map-support/register '**/*.spec.ts'",
-    "test": "yarn lint && yarn test:mocha && yarn build && ./example/scripts/test.sh",
+    "test": "yarn lint && yarn test:mocha && yarn check-example",
     "test:fix": "yarn lint:fix && yarn test:mocha",
-    "test:coverage": "yarn lint && yarn test:mocha:coverage",
+    "test:coverage": "yarn lint && yarn test:mocha:coverage && yarn check-example",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "devDependencies": {
