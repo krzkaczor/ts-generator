@@ -16,17 +16,19 @@ interface TOptions {
 }
 
 export default class Typechain extends TsGeneratorPlugin {
+  name = "Typechain";
+
   private readonly runtimePathAbs: string;
   private readonly genPath?: string;
   constructor(ctx: TContext) {
     super(ctx);
 
-    const { cwd, config } = ctx;
-    this.runtimePathAbs = join(cwd, config.runtimePath);
-    this.genPath = config.output && join(cwd, config.output);
+    const { cwd, rawConfig } = ctx;
+    this.runtimePathAbs = join(cwd, rawConfig.runtimePath);
+    this.genPath = rawConfig.output && join(cwd, rawConfig.output);
   }
 
-  init(): void {
+  beforeRun(): void {
     if (this.genPath) {
       mkdirp(this.genPath);
     }

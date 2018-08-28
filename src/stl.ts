@@ -18,3 +18,5 @@ export type DeepReadonly<T> = T extends TPrimitive
   : T extends Array<infer U> ? ReadonlyArray<U> : T extends Function ? T : DeepReadonlyObject<T>;
 
 export type DeepReadonlyObject<T> = { readonly [P in keyof T]: DeepReadonly<T[P]> };
+
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

@@ -4,3 +4,4 @@ example/gen/*
 coverage
 sample.json.d.ts
 dist
+yarn-error.log

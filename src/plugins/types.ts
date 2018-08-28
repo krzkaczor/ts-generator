@@ -3,19 +3,23 @@ import { Dictionary } from "../stl";
 
 export type TPluginState = "uninitialized" | "initialized";
 
+export type TOutput = void | TFileDesc | TFileDesc[];
+
 export abstract class TsGeneratorPlugin {
   public state: TPluginState = "uninitialized";
+  public abstract readonly name: string;
 
-  constructor(protected ctx: TContext) {}
+  constructor(public readonly ctx: TContext) {}
 
-  abstract init(): void | Promise<void>;
+  beforeRun(): TOutput | Promise<TOutput> {}
+  afterRun(): TOutput | Promise<TOutput> {}
 
-  abstract transformFile(file: TFileDesc): TFileDesc | TFileDesc[] | Promise<TFileDesc | TFileDesc[]>;
+  abstract transformFile(file: TFileDesc): TOutput | Promise<TOutput>;
 }
 
 export interface TContext<T = Dictionary<any>> {
   cwd: string;
-  config: TPluginCfg<T>;
+  rawConfig: TPluginCfg<T>;
 }
 
 export interface TFileDesc {
