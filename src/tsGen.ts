@@ -1,5 +1,4 @@
 import * as glob from "glob";
-import * as mkdirp from "mkdirp";
 import { Options as PrettierOptions } from "prettier";
 
 import { TFileDesc, TOutput, TsGeneratorPlugin } from "./plugins/types";
@@ -44,7 +43,7 @@ export async function tsGen(
 }
 
 function processOutput(
-  { fs, prettier, logger }: TDeps,
+  { fs, prettier, logger, mkdirp }: TDeps,
   prettierCfg: PrettierOptions | undefined,
   output: TOutput,
 ): void {
@@ -55,7 +54,7 @@ function processOutput(
 
   outputFds.forEach(fd => {
     // ensure directory first
-    mkdirp.sync(dirname(fd.path));
+    mkdirp(dirname(fd.path));
 
     logger.info("Writing file: ", fd.path);
     fs.writeFileSync(fd.path, prettier.format(fd.contents, { ...(prettierCfg || {}), parser: "typescript" }), "utf8");
