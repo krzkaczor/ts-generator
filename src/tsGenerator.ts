@@ -1,27 +1,26 @@
 import * as glob from "glob";
-import { Options as PrettierOptions } from "prettier";
 
 import { TFileDesc, TOutput, TsGeneratorPlugin } from "./plugins/types";
-import { TTsGenCfg } from "./parseConfigFile";
+import { TCfg } from "./parseConfigFile";
 import { TDeps, createDeps } from "./deps";
 import { isArray } from "util";
-import { Omit } from "./stl";
 import { dirname, relative } from "path";
+import { outputTransformers } from "./outputTransformers";
 
 export async function tsGenerator(
-  cfg: Omit<TTsGenCfg, "plugins">,
+  cfg: TCfg,
   _plugins: TsGeneratorPlugin | TsGeneratorPlugin[],
   _deps?: TDeps,
 ): Promise<void> {
   const deps = _deps || createDeps();
   const plugins = isArray(_plugins) ? _plugins : [_plugins];
 
-  const { cwd, prettier } = cfg;
+  const { cwd } = cfg;
   const { fs, logger } = deps;
 
   for (const plugin of plugins) {
     logger.verbose("Running before hook for", logger.accent(plugin.name));
-    processOutput(deps, prettier, await plugin.beforeRun());
+    processOutput(deps, cfg, await plugin.beforeRun());
 
     const filePaths = glob.sync(plugin.ctx.rawConfig.files, { ignore: "node_modules/**", absolute: true, cwd });
     const fileDescs = filePaths.map(
@@ -34,19 +33,16 @@ export async function tsGenerator(
     for (const fd of fileDescs) {
       logger.info(`Processing ${logger.accent(relative(cwd, fd.path))} with ${logger.accent(plugin.name)} plugin`);
 
-      processOutput(deps, prettier, await plugin.transformFile(fd));
+      processOutput(deps, cfg, await plugin.transformFile(fd));
     }
 
     logger.verbose("Running after hook for", logger.accent(plugin.name));
-    processOutput(deps, prettier, await plugin.afterRun());
+    processOutput(deps, cfg, await plugin.afterRun());
   }
 }
 
-export function processOutput(
-  { fs, prettier, logger, mkdirp }: TDeps,
-  prettierCfg: PrettierOptions | undefined,
-  output: TOutput,
-): void {
+export function processOutput(deps: TDeps, cfg: TCfg, output: TOutput): void {
+  const { fs, logger, mkdirp } = deps;
   if (!output) {
     return;
   }
@@ -56,7 +52,12 @@ export function processOutput(
     // ensure directory first
     mkdirp(dirname(fd.path));
 
+    const finalOutput = outputTransformers.reduce(
+      (content, transformer) => transformer(content, deps, cfg),
+      fd.contents,
+    );
+
     logger.verbose("Writing file: ", fd.path);
-    fs.writeFileSync(fd.path, prettier.format(fd.contents, { ...(prettierCfg || {}), parser: "typescript" }), "utf8");
+    fs.writeFileSync(fd.path, finalOutput, "utf8");
   });
 }

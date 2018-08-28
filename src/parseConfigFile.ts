@@ -1,6 +1,8 @@
-import { TDeps } from "./deps";
 import { Options as PrettierOptions } from "prettier";
+
+import { TDeps } from "./deps";
 import { Dictionary } from "./stl";
+import { Omit } from "./stl";
 
 export type TPluginCfg<T = Dictionary<any>> = {
   files: string;
@@ -12,6 +14,8 @@ export interface TTsGenCfg {
   plugins: TPluginCfg[];
   prettier?: PrettierOptions;
 }
+
+export type TCfg = Omit<TTsGenCfg, "plugins">;
 
 interface TArgs {
   cwd: string;
