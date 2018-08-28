@@ -1,7 +1,7 @@
 /* tslint:disable:no-console */
 import chalk from "chalk";
 
-const { gray, yellow, red } = chalk;
+const { gray, green, yellow, red } = chalk;
 
 type TLoggerFunction = (...args: any[]) => void;
 type TLoggerLvl = "normal" | "verbose";
@@ -12,6 +12,7 @@ export interface TLogger {
   error: TLoggerFunction;
   warn: TLoggerFunction;
 
+  accent(s: string): string;
   childLogger(name: string): TLogger;
 }
 
@@ -19,7 +20,7 @@ export class ConsoleLogger implements TLogger {
   constructor(private name: string, private lvl: TLoggerLvl) {}
 
   private prefix(): string {
-    return `${gray(this.name)}: `;
+    return `${gray(this.name)}:`;
   }
 
   info(...args: any[]): void {
@@ -40,6 +41,10 @@ export class ConsoleLogger implements TLogger {
     console.info(this.prefix(), ...args.map(m => yellow(m)));
   }
 
+  accent(s: string): string {
+    return green(s);
+  }
+
   childLogger(name: string): TLogger {
     return new ConsoleLogger(name, this.lvl);
   }
@@ -51,6 +56,9 @@ export class NoLogger implements TLogger {
   error(): void {}
   warn(): void {}
 
+  accent(s: string): string {
+    return s;
+  }
   childLogger(): TLogger {
     return new NoLogger();
   }

@@ -3,8 +3,11 @@ import { processOutput } from "../src/tsGenerator";
 import { unimock } from "./utils";
 import { TDeps } from "../src/deps";
 import { expect } from "chai";
+import { NoLogger } from "../src/logger";
 
 describe("processOutput", () => {
+  const logger = new NoLogger();
+
   it("should do nothing when no files to process", () => {
     const deps = unimock<TDeps>({
       fs: undefined,
@@ -22,7 +25,7 @@ describe("processOutput", () => {
     const deps = unimock<TDeps>({
       fs: { writeFileSync: () => {} },
       prettier: { format: (contents: string) => contents },
-      logger: { info: () => {} },
+      logger,
       mkdirp: (_path: string) => {},
     });
 
@@ -44,7 +47,7 @@ describe("processOutput", () => {
     const deps = unimock<TDeps>({
       fs: { writeFileSync: () => {} },
       prettier: { format: (contents: string) => contents },
-      logger: { info: () => {} },
+      logger,
       mkdirp: (_path: string) => {},
     });
 

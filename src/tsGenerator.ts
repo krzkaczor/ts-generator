@@ -6,7 +6,7 @@ import { TTsGenCfg } from "./parseConfigFile";
 import { TDeps, createDeps } from "./deps";
 import { isArray } from "util";
 import { Omit } from "./stl";
-import { dirname } from "path";
+import { dirname, relative } from "path";
 
 export async function tsGenerator(
   cfg: Omit<TTsGenCfg, "plugins">,
@@ -20,7 +20,7 @@ export async function tsGenerator(
   const { fs, logger } = deps;
 
   for (const plugin of plugins) {
-    logger.info("Running before run");
+    logger.verbose("Running before hook for", logger.accent(plugin.name));
     processOutput(deps, prettier, await plugin.beforeRun());
 
     const filePaths = glob.sync(plugin.ctx.rawConfig.files, { ignore: "node_modules/**", absolute: true, cwd });
@@ -32,12 +32,12 @@ export async function tsGenerator(
         } as TFileDesc),
     );
     for (const fd of fileDescs) {
-      logger.info(`Processing ${fd.path} with ${plugin.name} plugin`);
+      logger.info(`Processing ${logger.accent(relative(cwd, fd.path))} with ${logger.accent(plugin.name)} plugin`);
 
       processOutput(deps, prettier, await plugin.transformFile(fd));
     }
 
-    logger.info("Running after run");
+    logger.verbose("Running after hook for", logger.accent(plugin.name));
     processOutput(deps, prettier, await plugin.afterRun());
   }
 }
@@ -56,7 +56,7 @@ export function processOutput(
     // ensure directory first
     mkdirp(dirname(fd.path));
 
-    logger.info("Writing file: ", fd.path);
+    logger.verbose("Writing file: ", fd.path);
     fs.writeFileSync(fd.path, prettier.format(fd.contents, { ...(prettierCfg || {}), parser: "typescript" }), "utf8");
   });
 }
