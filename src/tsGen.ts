@@ -42,7 +42,7 @@ export async function tsGen(
   }
 }
 
-function processOutput(
+export function processOutput(
   { fs, prettier, logger, mkdirp }: TDeps,
   prettierCfg: PrettierOptions | undefined,
   output: TOutput,
