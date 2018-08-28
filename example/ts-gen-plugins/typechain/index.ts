@@ -15,7 +15,7 @@ interface TOptions {
   output?: string;
 }
 
-export default class Typechain extends TsGeneratorPlugin {
+export class Typechain extends TsGeneratorPlugin {
   name = "Typechain";
 
   private readonly runtimePathAbs: string;
