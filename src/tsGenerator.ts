@@ -9,11 +9,11 @@ import { outputTransformers } from "./outputTransformers";
 
 export async function tsGenerator(
   cfg: TCfg,
-  _plugins: TsGeneratorPlugin | TsGeneratorPlugin[],
-  _deps?: TDeps,
+  plugins_: TsGeneratorPlugin | TsGeneratorPlugin[],
+  deps_?: TDeps,
 ): Promise<void> {
-  const deps = _deps || createDeps();
-  const plugins = isArray(_plugins) ? _plugins : [_plugins];
+  const deps = deps_ || createDeps();
+  const plugins = isArray(plugins_) ? plugins_ : [plugins_];
 
   const { cwd } = cfg;
   const { fs, logger } = deps;

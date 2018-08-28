@@ -4,25 +4,27 @@ import { TDeps } from "./deps";
 import { Dictionary } from "./stl";
 import { Omit } from "./stl";
 
-export type TPluginCfg<T = Dictionary<any>> = {
+export type TRawPluginCfg<T = Dictionary<any>> = {
   files: string;
   generator: string;
 } & T;
 
-export interface TTsGenCfg {
+export type TPluginCfg<T = Dictionary<any>> = Omit<TRawPluginCfg<T>, "generator">;
+
+export interface TRawCfg {
   cwd: string;
-  plugins: TPluginCfg[];
+  plugins: TRawPluginCfg[];
   prettier?: PrettierOptions;
 }
 
-export type TCfg = Omit<TTsGenCfg, "plugins">;
+export type TCfg = Omit<TRawCfg, "plugins">;
 
 interface TArgs {
   cwd: string;
   configPath: string;
 }
 
-export async function parseConfigFile({ fs, prettier, logger }: TDeps, { cwd, configPath }: TArgs): Promise<TTsGenCfg> {
+export async function parseConfigFile({ fs, prettier, logger }: TDeps, { cwd, configPath }: TArgs): Promise<TRawCfg> {
   const config = fs.readFileSync(configPath, "utf-8");
 
   // assume that config is correctly formatted JUST FOR NOW
