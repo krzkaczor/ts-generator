@@ -1,9 +1,10 @@
-import { TPlugin, TFileDesc } from "../../../../src/publicApi";
+import { TsGeneratorPlugin, TFileDesc } from "../../../../src/publicApi";
+import { join } from "path";
 
 const generateType = (name: string, type: string): string => `export const ${name}: ${type}`;
 
-export default class JsonPlugin implements TPlugin {
-  init(): void {}
+export default class JsonPlugin extends TsGeneratorPlugin {
+  name = "JsonPlugin";
 
   transformFile({ path, contents }: TFileDesc): TFileDesc {
     const outputFileName = `${path}.d.ts`;
@@ -23,6 +24,20 @@ export default class JsonPlugin implements TPlugin {
     return {
       contents: types,
       path: outputFileName,
+    };
+  }
+
+  beforeRun(): TFileDesc {
+    return {
+      path: join(this.ctx.cwd, "before.ts"),
+      contents: `export default "before"`,
+    };
+  }
+
+  afterRun(): TFileDesc {
+    return {
+      path: join(this.ctx.cwd, "after.ts"),
+      contents: `export default "after"`,
     };
   }
 }

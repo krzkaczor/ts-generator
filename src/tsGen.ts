@@ -1,31 +1,29 @@
 import * as glob from "glob";
+import { Options as PrettierOptions } from "prettier";
 
-import { TFileDesc } from "./plugins/types";
-import { parseConfigFile } from "./parseConfigFile";
-import { TDeps } from "./deps";
-import { loadPlugin } from "./plugins/loadPlugin";
-import { TContext } from "./plugins/types";
+import { TFileDesc, TOutput, TsGeneratorPlugin } from "./plugins/types";
+import { TTsGenCfg } from "./parseConfigFile";
+import { TDeps, createDeps } from "./deps";
 import { isArray } from "util";
+import { Omit } from "./stl";
+import { dirname } from "path";
 
-export interface TArgs {
-  cwd: string;
-  configPath: string;
-}
+export async function tsGen(
+  cfg: Omit<TTsGenCfg, "plugins">,
+  _plugins: TsGeneratorPlugin | TsGeneratorPlugin[],
+  _deps?: TDeps,
+): Promise<void> {
+  const deps = _deps || createDeps();
+  const plugins = isArray(_plugins) ? _plugins : [_plugins];
 
-export async function tsGen(deps: TDeps, args: TArgs): Promise<void> {
-  const { cwd } = args;
-  const { fs, logger, prettier } = deps;
+  const { cwd, prettier } = cfg;
+  const { fs, logger } = deps;
 
-  const genConfig = await parseConfigFile(deps, args);
+  for (const plugin of plugins) {
+    logger.info("Running before run");
+    processOutput(deps, prettier, await plugin.beforeRun());
 
-  for (const config of genConfig.plugins) {
-    const ctx: TContext = { cwd, config };
-
-    const plugin = loadPlugin(deps, ctx);
-
-    await plugin.init();
-
-    const filePaths = glob.sync(config.files, { ignore: "node_modules/**", absolute: true, cwd });
+    const filePaths = glob.sync(plugin.ctx.rawConfig.files, { ignore: "node_modules/**", absolute: true, cwd });
     const fileDescs = filePaths.map(
       path =>
         ({
@@ -33,14 +31,32 @@ export async function tsGen(deps: TDeps, args: TArgs): Promise<void> {
           contents: fs.readFileSync(path, "utf8"),
         } as TFileDesc),
     );
-
     for (const fd of fileDescs) {
-      logger.info(`Processing ${fd.path} with ${config.generator} plugin`);
+      logger.info(`Processing ${fd.path} with ${plugin.name} plugin`);
 
-      const output = await plugin.transformFile(fd);
-      const outputFds = isArray(output) ? output : [output];
-
-      outputFds.forEach(fd => fs.writeFileSync(fd.path, prettier.format(fd.contents, genConfig.prettier), "utf8"));
+      processOutput(deps, prettier, await plugin.transformFile(fd));
     }
+
+    logger.info("Running after run");
+    processOutput(deps, prettier, await plugin.afterRun());
   }
+}
+
+export function processOutput(
+  { fs, prettier, logger, mkdirp }: TDeps,
+  prettierCfg: PrettierOptions | undefined,
+  output: TOutput,
+): void {
+  if (!output) {
+    return;
+  }
+  const outputFds = isArray(output) ? output : [output];
+
+  outputFds.forEach(fd => {
+    // ensure directory first
+    mkdirp(dirname(fd.path));
+
+    logger.info("Writing file: ", fd.path);
+    fs.writeFileSync(fd.path, prettier.format(fd.contents, { ...(prettierCfg || {}), parser: "typescript" }), "utf8");
+  });
 }

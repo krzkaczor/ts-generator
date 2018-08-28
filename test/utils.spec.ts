@@ -14,14 +14,14 @@ describe("utils", () => {
 
   describe("getRelativeModulePath", () => {
     it("should work in the same directory", () => {
-      const cwd = "/app/";
+      const cwd = "/app/index.ts";
       const to = "/app/module2.ts";
 
       expect(getRelativeModulePath(cwd, to)).to.be.eq("./module2");
     });
 
-    it("should work in the same directory", () => {
-      const cwd = "/app2";
+    it("should work in different directories", () => {
+      const cwd = "/app2/index.ts";
       const to = "/app/module2.ts";
 
       expect(getRelativeModulePath(cwd, to)).to.be.eq("./../app/module2");

@@ -1,16 +1,21 @@
 import { TDeps } from "./deps";
 import { Options as PrettierOptions } from "prettier";
-import { TArgs } from "./tsGen";
+import { Dictionary } from "./stl";
 
-export interface TPluginCfg {
+export type TPluginCfg<T = Dictionary<any>> = {
   files: string;
   generator: string;
-  [key: string]: any;
-}
+} & T;
 
 export interface TTsGenCfg {
-  prettier: PrettierOptions;
+  cwd: string;
   plugins: TPluginCfg[];
+  prettier?: PrettierOptions;
+}
+
+interface TArgs {
+  cwd: string;
+  configPath: string;
 }
 
 export async function parseConfigFile({ fs, prettier, logger }: TDeps, { cwd, configPath }: TArgs): Promise<TTsGenCfg> {
@@ -28,7 +33,8 @@ export async function parseConfigFile({ fs, prettier, logger }: TDeps, { cwd, co
   }
 
   return {
-    prettier: { ...(prettierCfg || {}), parser: "typescript" },
+    cwd,
+    prettier: prettierCfg!,
     plugins: pluginCfg,
   };
 }

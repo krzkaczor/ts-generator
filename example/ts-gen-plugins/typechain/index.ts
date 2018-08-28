@@ -1,23 +1,34 @@
-import { TPlugin, TFileDesc, TContext } from "../../../src/plugins/types";
 import { copyRuntime, abiToWrapper } from "typechain";
-import { getFilenameWithoutAnyExtensions, getRelativeModulePath } from "../../../dist/publicApi";
 import { parse, join } from "path";
 import { sync as mkdirp } from "mkdirp";
+
+import {
+  getFilenameWithoutAnyExtensions,
+  getRelativeModulePath,
+  TFileDesc,
+  TContext,
+  TsGeneratorPlugin,
+} from "ts-generator";
 
 interface TOptions {
   runtimePath: string;
   output?: string;
 }
 
-export default class Typechain implements TPlugin {
+export default class Typechain extends TsGeneratorPlugin {
+  name = "Typechain";
+
   private readonly runtimePathAbs: string;
   private readonly genPath?: string;
-  constructor({ cwd, config }: TContext) {
-    this.runtimePathAbs = join(cwd, config.runtimePath);
-    this.genPath = config.output && join(cwd, config.output);
+  constructor(ctx: TContext) {
+    super(ctx);
+
+    const { cwd, rawConfig } = ctx;
+    this.runtimePathAbs = join(cwd, rawConfig.runtimePath);
+    this.genPath = rawConfig.output && join(cwd, rawConfig.output);
   }
 
-  init(): void {
+  beforeRun(): void {
     if (this.genPath) {
       mkdirp(this.genPath);
     }
