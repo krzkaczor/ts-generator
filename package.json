@@ -55,6 +55,7 @@
   "dependencies": {
     "@types/mkdirp": "^0.5.2",
     "@types/prettier": "^1.13.2",
+    "chalk": "^2.4.1",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1",
     "prettier": "^1.14.2"

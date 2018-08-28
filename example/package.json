@@ -7,7 +7,7 @@
     "prepare": "./scripts/prepare.sh",
     "start": "cd .. && yarn build && cd ./example && rm -rf ./gen && ../node_modules/.bin/ts-node ../dist/cli/run.js ./ts-gen.json",
     "tsc": "../node_modules/.bin/tsc --noEmit",
-    "tslint": "../node_modules/.bin/tslint -p ./tsconfig.json -e 'node_modules/**/*' -e '**/*.ts'",
+    "tslint": "../node_modules/.bin/tslint -p ./tsconfig.json -e 'node_modules/**/*' '**/*.ts'",
     "test": "yarn tslint & yarn tsc"
   },
   "dependencies": {

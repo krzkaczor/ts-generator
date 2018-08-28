@@ -20,7 +20,7 @@ export default class Typechain extends TsGeneratorPlugin {
 
   private readonly runtimePathAbs: string;
   private readonly genPath?: string;
-  constructor(ctx: TContext) {
+  constructor(ctx: TContext<TOptions>) {
     super(ctx);
 
     const { cwd, rawConfig } = ctx;
@@ -50,7 +50,7 @@ export default class Typechain extends TsGeneratorPlugin {
 
     return [
       {
-        path: join(outputDir, contractName + ".ts"),
+        path: join(outputDir, `${contractName}.ts`),
         contents: types,
       },
     ];

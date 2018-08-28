@@ -17,6 +17,6 @@ export function createDeps(): TDeps {
     prettier,
     mkdirp,
     resolve: require.resolve.bind(require),
-    logger: new ConsoleLogger(false),
+    logger: new ConsoleLogger("ts-gen", "normal"),
   };
 }
