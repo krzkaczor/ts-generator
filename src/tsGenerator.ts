@@ -8,7 +8,7 @@ import { isArray } from "util";
 import { Omit } from "./stl";
 import { dirname } from "path";
 
-export async function tsGen(
+export async function tsGenerator(
   cfg: Omit<TTsGenCfg, "plugins">,
   _plugins: TsGeneratorPlugin | TsGeneratorPlugin[],
   _deps?: TDeps,

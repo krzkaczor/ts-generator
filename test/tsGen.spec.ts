@@ -1,5 +1,5 @@
 import { TFileDesc } from "../src/publicApi";
-import { processOutput } from "../src/tsGen";
+import { processOutput } from "../src/tsGenerator";
 import { unimock } from "./utils";
 import { TDeps } from "../src/deps";
 import { expect } from "chai";

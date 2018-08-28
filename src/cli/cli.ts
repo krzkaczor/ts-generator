@@ -1,5 +1,5 @@
 import { join, dirname } from "path";
-import { tsGen } from "../tsGen";
+import { tsGenerator } from "../tsGenerator";
 import { createDeps, TDeps } from "../deps";
 import { parseConfigFile } from "../parseConfigFile";
 import { loadPlugin } from "../plugins/loadPlugin";
@@ -14,5 +14,5 @@ export async function cli(configPathRel: string, customDeps?: Partial<TDeps>): P
 
   const plugins = cfg.plugins.map(pluginCfg => loadPlugin(deps, { cwd: cfg.cwd, rawConfig: pluginCfg }));
 
-  await tsGen(cfg, plugins, deps);
+  await tsGenerator(cfg, plugins, deps);
 }
