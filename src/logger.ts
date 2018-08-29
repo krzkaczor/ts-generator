@@ -1,10 +1,17 @@
 /* tslint:disable:no-console */
 import chalk from "chalk";
+import { UnionDictionary } from "./stl";
 
 const { gray, green, yellow, red } = chalk;
 
 type TLoggerFunction = (...args: any[]) => void;
-type TLoggerLvl = "normal" | "verbose";
+export type TLoggerLvl = "info" | "verbose" | "error";
+
+const loggerLvlToNumber: UnionDictionary<TLoggerLvl, number> = {
+  verbose: 2,
+  info: 1,
+  error: 0,
+};
 
 export interface TLogger {
   info: TLoggerFunction;
@@ -14,27 +21,32 @@ export interface TLogger {
 
   accent(s: string): string;
   childLogger(name: string): TLogger;
+  lvl: TLoggerLvl;
 }
 
 export class ConsoleLogger implements TLogger {
-  constructor(private name: string, private lvl: TLoggerLvl) {}
+  constructor(private name: string, public lvl: TLoggerLvl) {}
 
   private prefix(): string {
     return `${gray(this.name)}:`;
   }
 
   info(...args: any[]): void {
-    console.info(this.prefix(), ...args);
+    if (loggerLvlToNumber["info"] <= loggerLvlToNumber[this.lvl]) {
+      console.info(this.prefix(), ...args);
+    }
   }
 
   verbose(...args: any[]): void {
-    if (this.lvl === "verbose") {
+    if (loggerLvlToNumber["verbose"] <= loggerLvlToNumber[this.lvl]) {
       console.info(this.prefix(), ...args);
     }
   }
 
   error(...args: any[]): void {
-    console.error(this.prefix(), ...args.map(m => red(m)));
+    if (loggerLvlToNumber["error"] <= loggerLvlToNumber[this.lvl]) {
+      console.error(this.prefix(), ...args.map(m => red(m)));
+    }
   }
 
   warn(...args: any[]): void {
@@ -51,6 +63,7 @@ export class ConsoleLogger implements TLogger {
 }
 
 export class NoLogger implements TLogger {
+  lvl: TLoggerLvl = "error";
   info(): void {}
   verbose(): void {}
   error(): void {}
