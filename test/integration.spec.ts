@@ -17,7 +17,21 @@ describe("integration", () => {
   });
 
   it("should run ts-gen programmatically", async () => {
-    await cli("./test/integration/ts-gen.json", { logger: new NoLogger() });
+    const fsButWithFixedNpmVersion: typeof fs = {
+      ...fs,
+      readFileSync: (...args: any[]): any => {
+        const packageJsonPath = join(__dirname, "../package.json");
+        if (args[0] === packageJsonPath) {
+          return JSON.stringify({
+            version: "1.0.0",
+          });
+        } else {
+          return (fs as any).readFileSync(...args);
+        }
+      },
+    };
+
+    await cli("./test/integration/ts-gen.json", { logger: new NoLogger(), fs: fsButWithFixedNpmVersion });
 
     snapshot(fs.readFileSync(generateFilePath, "utf-8"));
     snapshot(fs.readFileSync(afterFilePath, "utf-8"));

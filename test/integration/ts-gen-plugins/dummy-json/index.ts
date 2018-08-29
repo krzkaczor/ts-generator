@@ -3,7 +3,7 @@ import { join } from "path";
 
 const generateType = (name: string, type: string): string => `export const ${name}: ${type}`;
 
-export default class JsonPlugin extends TsGeneratorPlugin {
+export class JsonPlugin extends TsGeneratorPlugin {
   name = "JsonPlugin";
 
   transformFile({ path, contents }: TFileDesc): TFileDesc {

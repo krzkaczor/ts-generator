@@ -1,4 +1,4 @@
-import { getFilenameWithoutAnyExtensions, getRelativeModulePath } from "../src/utils";
+import { getFilenameWithoutAnyExtensions, getRelativeModulePath } from "./utils";
 import { expect } from "chai";
 
 describe("utils", () => {

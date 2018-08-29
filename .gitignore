@@ -2,6 +2,8 @@ node_modules
 example/gen/*
 .nyc_output
 coverage
-sample.json.d.ts
+test/integration/sample.json.d.ts
+test/integration/before.ts
+test/integration/after.ts
 dist
 yarn-error.log

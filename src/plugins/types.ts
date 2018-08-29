@@ -1,15 +1,16 @@
 import { TPluginCfg } from "../parseConfigFile";
 import { Dictionary } from "../stl";
-
-export type TPluginState = "uninitialized" | "initialized";
+import { TLogger, NoLogger } from "../logger";
 
 export type TOutput = void | TFileDesc | TFileDesc[];
 
 export abstract class TsGeneratorPlugin {
-  public state: TPluginState = "uninitialized";
   public abstract readonly name: string;
+  public readonly logger: TLogger;
 
-  constructor(public readonly ctx: TContext) {}
+  constructor(public readonly ctx: TContext) {
+    this.logger = ctx.logger || new NoLogger();
+  }
 
   beforeRun(): TOutput | Promise<TOutput> {}
   afterRun(): TOutput | Promise<TOutput> {}
@@ -20,6 +21,7 @@ export abstract class TsGeneratorPlugin {
 export interface TContext<T = Dictionary<any>> {
   cwd: string;
   rawConfig: TPluginCfg<T>;
+  logger?: TLogger;
 }
 
 export interface TFileDesc {
