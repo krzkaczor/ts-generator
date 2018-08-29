@@ -17,6 +17,7 @@ export async function tsGenerator(
 
   const { cwd } = cfg;
   const { fs, logger } = deps;
+  logger.lvl = cfg.loggingLvl || "error";
 
   for (const plugin of plugins) {
     logger.verbose("Running before hook for", logger.accent(plugin.name));

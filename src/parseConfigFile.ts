@@ -3,6 +3,7 @@ import { Options as PrettierOptions } from "prettier";
 import { TDeps } from "./deps";
 import { Dictionary } from "./stl";
 import { Omit } from "./stl";
+import { TLoggerLvl } from "./logger";
 
 export type TRawPluginCfg<T = Dictionary<any>> = {
   files: string;
@@ -15,6 +16,7 @@ export interface TRawCfg {
   cwd: string;
   plugins: TRawPluginCfg[];
   prettier?: PrettierOptions;
+  loggingLvl?: TLoggerLvl;
 }
 
 export type TCfg = Omit<TRawCfg, "plugins">;
