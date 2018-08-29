@@ -4,7 +4,7 @@ The missing piece for fully typesafe Typescript apps
 
 Generate Typescript typings for any kind of files (json, graphql queries, css modules).
 
-[![Coverage Status](https://coveralls.io/repos/github/krzkaczor/ts-gen/badge.svg?branch=master)](https://coveralls.io/github/krzkaczor/ts-gen?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/krzkaczor/ts-generator/badge.svg?branch=master)](https://coveralls.io/github/krzkaczor/ts-gen?branch=master)
 
 ## Features:
 
