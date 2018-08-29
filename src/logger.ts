@@ -32,19 +32,19 @@ export class ConsoleLogger implements TLogger {
   }
 
   info(...args: any[]): void {
-    if (loggerLvlToNumber["info"] >= loggerLvlToNumber[this.lvl]) {
+    if (loggerLvlToNumber["info"] <= loggerLvlToNumber[this.lvl]) {
       console.info(this.prefix(), ...args);
     }
   }
 
   verbose(...args: any[]): void {
-    if (loggerLvlToNumber["verbose"] >= loggerLvlToNumber[this.lvl]) {
+    if (loggerLvlToNumber["verbose"] <= loggerLvlToNumber[this.lvl]) {
       console.info(this.prefix(), ...args);
     }
   }
 
   error(...args: any[]): void {
-    if (loggerLvlToNumber["error"] >= loggerLvlToNumber[this.lvl]) {
+    if (loggerLvlToNumber["error"] <= loggerLvlToNumber[this.lvl]) {
       console.error(this.prefix(), ...args.map(m => red(m)));
     }
   }
