@@ -1,11 +1,11 @@
-import { TFileDesc } from "../src/publicApi";
-import { processOutput } from "../src/tsGenerator";
-import { unimock } from "./utils";
-import { TDeps } from "../src/deps";
+import { TFileDesc } from "./publicApi";
+import { processOutput } from "./tsGenerator";
+import { unimock } from "../test/utils";
+import { TDeps } from "./deps";
 import { expect } from "chai";
-import { NoLogger } from "../src/logger";
-import { TCfg } from "../src/parseConfigFile";
-import { generateInfo } from "../src/outputTransformers/info";
+import { NoLogger } from "./logger";
+import { TCfg } from "./parseConfigFile";
+import { generateInfo } from "./outputTransformers/info";
 
 describe("processOutput", () => {
   const logger = new NoLogger();
