@@ -13,6 +13,8 @@ describe("integration", () => {
   beforeEach(() => {
     try {
       fs.unlinkSync(generateFilePath);
+      fs.unlinkSync(afterFilePath);
+      fs.unlinkSync(beforeFilePath);
     } catch {}
   });
 

@@ -16,6 +16,7 @@
   "scripts": {
     "start": "ts-node ./src/cli/cli.ts ./example/ts-gen.json",
     "build": "rm -rf ./dist && tsc -p tsconfig.prod.json --outDir ./dist",
+    "postbuild": "chmod +x ./dist/cli/run.js",
     "prepublishOnly": "yarn test && yarn build",
     "format": "prettier --list-different '**/*.{ts,json,md, gql}'",
     "format:fix": "prettier --write '**/*.{ts,json,md,gql}'",
@@ -37,6 +38,7 @@
     "@types/glob": "^5.0.35",
     "@types/mocha": "^5.2.0",
     "@types/node": "^10.0.3",
+    "@types/resolve": "^0.0.8",
     "@types/sinon": "^5.0.2",
     "@types/sinon-chai": "^3.2.0",
     "chai": "^4.1.2",
@@ -58,7 +60,8 @@
     "chalk": "^2.4.1",
     "glob": "^7.1.2",
     "mkdirp": "^0.5.1",
-    "prettier": "^1.14.2"
+    "prettier": "^1.14.2",
+    "resolve": "^1.8.1"
   },
   "files": [
     "dist/**",

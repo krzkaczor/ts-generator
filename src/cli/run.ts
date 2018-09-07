@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { cli } from "./cli";
 
 const configPathRel = process.argv[2];
@@ -5,7 +6,7 @@ const configPathRel = process.argv[2];
 console.assert(configPathRel, "You need to provide config path!");
 
 cli(configPathRel).catch(e => {
-  process.exit(1);
   // tslint:disable-next-line
   console.error(e);
+  process.exit(1);
 });
