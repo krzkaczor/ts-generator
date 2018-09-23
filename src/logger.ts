@@ -1,13 +1,13 @@
 /* tslint:disable:no-console */
 import chalk from "chalk";
-import { UnionDictionary } from "./stl";
+import { Dictionary } from "ts-essentials";
 
 const { gray, green, yellow, red } = chalk;
 
 type TLoggerFunction = (...args: any[]) => void;
 export type TLoggerLvl = "info" | "verbose" | "error";
 
-const loggerLvlToNumber: UnionDictionary<TLoggerLvl, number> = {
+const loggerLvlToNumber: Dictionary<number, TLoggerLvl> = {
   verbose: 2,
   info: 1,
   error: 0,

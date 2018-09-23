@@ -1,5 +1,5 @@
 import { TPluginCfg } from "../parseConfigFile";
-import { Dictionary } from "../stl";
+import { Dictionary } from "ts-essentials";
 import { TLogger, NoLogger } from "../logger";
 
 export type TOutput = void | TFileDesc | TFileDesc[];

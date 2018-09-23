@@ -1,6 +1,6 @@
 import { spy } from "sinon";
 import { isFunction, isObject } from "util";
-import { DeepPartial } from "../src/stl";
+import { DeepPartial } from "ts-essentials";
 
 export function spyify<T extends any>(mock: T | undefined): T | undefined {
   if (!mock) {

@@ -1,8 +1,7 @@
 import { Options as PrettierOptions } from "prettier";
 
 import { TDeps } from "./deps";
-import { Dictionary } from "./stl";
-import { Omit } from "./stl";
+import { Dictionary, Omit } from "ts-essentials";
 import { TLoggerLvl } from "./logger";
 
 export type TRawPluginCfg<T = Dictionary<any>> = {

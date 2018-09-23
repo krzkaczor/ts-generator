@@ -1,7 +1,7 @@
 import { resolvePlugin } from "./resolvePlugin";
 import { TDeps } from "../deps";
 import { TContext, TsGeneratorPlugin } from "./types";
-import { Dictionary } from "../stl";
+import { Dictionary } from "ts-essentials";
 
 export function loadPlugin(deps: TDeps, ctx: TContext): TsGeneratorPlugin {
   const pluginPath = resolvePlugin(deps, ctx.rawConfig.generator, ctx.cwd);
