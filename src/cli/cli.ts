@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { join, dirname } from "path";
 import { tsGenerator } from "../tsGenerator";
 import { createDeps, TDeps } from "../deps";
