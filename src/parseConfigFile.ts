@@ -41,6 +41,7 @@ export async function parseConfigFile({ fs, prettier, logger }: TDeps, { cwd, co
 
   return {
     cwd,
+    loggingLvl: "info",
     prettier: prettierCfg!,
     plugins: pluginCfg,
   };

@@ -7,6 +7,10 @@ import { isArray } from "util";
 import { dirname, relative } from "path";
 import { outputTransformers } from "./outputTransformers";
 
+const stats = {
+  filesGenerated: 0,
+};
+
 export async function tsGenerator(
   cfg: TCfg,
   plugins_: TsGeneratorPlugin | TsGeneratorPlugin[],
@@ -20,10 +24,13 @@ export async function tsGenerator(
   logger.lvl = cfg.loggingLvl || "error";
 
   for (const plugin of plugins) {
+    logger.info(`Running ${plugin.name}`);
     logger.verbose("Running before hook for", logger.accent(plugin.name));
     processOutput(deps, cfg, await plugin.beforeRun());
 
     const filePaths = glob.sync(plugin.ctx.rawConfig.files, { ignore: "node_modules/**", absolute: true, cwd });
+    logger.info(`${plugin.ctx.rawConfig.files} matched ${filePaths.length} files.`);
+
     const fileDescs = filePaths.map(
       path =>
         ({
@@ -31,8 +38,9 @@ export async function tsGenerator(
           contents: fs.readFileSync(path, "utf8"),
         } as TFileDesc),
     );
+
     for (const fd of fileDescs) {
-      logger.info(`Processing ${logger.accent(relative(cwd, fd.path))} with ${logger.accent(plugin.name)} plugin`);
+      logger.info(`Processing ${logger.accent(relative(cwd, fd.path))}`);
 
       processOutput(deps, cfg, await plugin.transformFile(fd));
     }
@@ -40,6 +48,8 @@ export async function tsGenerator(
     logger.verbose("Running after hook for", logger.accent(plugin.name));
     processOutput(deps, cfg, await plugin.afterRun());
   }
+
+  logger.info(`💎 All done! Generated files: ${stats.filesGenerated}`);
 }
 
 export function processOutput(deps: TDeps, cfg: TCfg, output: TOutput): void {
@@ -58,7 +68,8 @@ export function processOutput(deps: TDeps, cfg: TCfg, output: TOutput): void {
       fd.contents,
     );
 
-    logger.verbose("Writing file: ", fd.path);
+    logger.info(`Writing file: ${logger.accent(relative(cfg.cwd, fd.path))}`);
+    stats.filesGenerated++;
     fs.writeFileSync(fd.path, finalOutput, "utf8");
   });
 }
