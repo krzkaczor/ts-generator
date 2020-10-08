@@ -45,12 +45,12 @@ export class ConsoleLogger implements TLogger {
 
   error(...args: any[]): void {
     if (loggerLvlToNumber["error"] <= loggerLvlToNumber[this.lvl]) {
-      console.error(this.prefix(), ...args.map(m => red(m)));
+      console.error(this.prefix(), ...args.map((m) => red(m)));
     }
   }
 
   warn(...args: any[]): void {
-    console.info(this.prefix(), ...args.map(m => yellow(m)));
+    console.info(this.prefix(), ...args.map((m) => yellow(m)));
   }
 
   accent(s: string): string {

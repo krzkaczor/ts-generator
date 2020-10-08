@@ -13,7 +13,7 @@ export async function cli(configPathRel: string, customDeps?: Partial<TDeps>): P
 
   const cfg = await parseConfigFile(deps, { configPath, cwd });
 
-  const plugins = cfg.plugins.map(pluginCfg =>
+  const plugins = cfg.plugins.map((pluginCfg) =>
     loadPlugin(deps, { cwd: cfg.cwd, rawConfig: pluginCfg, logger: deps.logger.childLogger(pluginCfg.generator) }),
   );
 

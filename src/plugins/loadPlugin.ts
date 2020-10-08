@@ -10,9 +10,7 @@ export function loadPlugin(deps: TDeps, ctx: TContext): TsGeneratorPlugin {
   const moduleExportsCount = Object.keys(PluginModule).length;
   if (moduleExportsCount !== 1) {
     throw new Error(
-      `Loading plugin ${
-        ctx.rawConfig.generator
-      } failed. Plugin module has to export exactly one entity. Found ${moduleExportsCount} instead`,
+      `Loading plugin ${ctx.rawConfig.generator} failed. Plugin module has to export exactly one entity. Found ${moduleExportsCount} instead`,
     );
   }
 

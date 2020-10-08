@@ -11,7 +11,7 @@ export function spyify<T extends any>(mock: T | undefined): T | undefined {
     return mock;
   }
 
-  Object.keys(mock).forEach(key => {
+  Object.keys(mock).forEach((key) => {
     if (!isFunction(mock[key])) {
       mock[key] = spyify(mock[key]);
     } else {

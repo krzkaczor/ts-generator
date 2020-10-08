@@ -12,7 +12,7 @@ export class JsonPlugin extends TsGeneratorPlugin {
     const json = JSON.parse(contents);
 
     // assume that json is 1 level nested structure
-    const nameTypePairs = Object.keys(json).map(k => {
+    const nameTypePairs = Object.keys(json).map((k) => {
       const value = json[k];
       const valueType = typeof value;
 

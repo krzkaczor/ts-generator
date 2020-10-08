@@ -32,7 +32,7 @@ export async function tsGenerator(
     logger.info(`${plugin.ctx.rawConfig.files} matched ${filePaths.length} files.`);
 
     const fileDescs = filePaths.map(
-      path =>
+      (path) =>
         ({
           path,
           contents: fs.readFileSync(path, "utf8"),
@@ -59,7 +59,7 @@ export function processOutput(deps: TDeps, cfg: TCfg, output: TOutput): void {
   }
   const outputFds = isArray(output) ? output : [output];
 
-  outputFds.forEach(fd => {
+  outputFds.forEach((fd) => {
     // ensure directory first
     mkdirp(dirname(fd.path));
 

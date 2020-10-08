@@ -47,7 +47,10 @@ describe("processOutput", () => {
   });
 
   it("should work with multiple files", () => {
-    const files: TFileDesc[] = [{ path: "/dir/a.ts", contents: "AAA" }, { path: "/dir/b.ts", contents: "BBB" }];
+    const files: TFileDesc[] = [
+      { path: "/dir/a.ts", contents: "AAA" },
+      { path: "/dir/b.ts", contents: "BBB" },
+    ];
 
     const deps = unimock<TDeps>({
       fs: { writeFileSync: () => {}, readFileSync: () => "{}" },
